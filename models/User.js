@@ -21,7 +21,8 @@ export const userSchema = new Schema({
     },
     currentBalance: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     transactions: [transactionSchema],
     createAt: {

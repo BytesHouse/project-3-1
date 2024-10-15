@@ -1,17 +1,19 @@
 import { Router } from 'express'
 import User from '../models/User.js';
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 const router = Router();
 
 //Auth
 router.post('/auth', async (req, res) => {
     try {
-        const { login, password } = req.body;
+        const { userData } = req.body;
+        const { login, password } = userData;
 
         const user = await User.findOne({ userName: login })
 
-        if (!user.userName) {
+        if (!user?.userName) {
             res.status(401).json({ message: 'Пользователя не существует' })
         }
         const isMatch = await bcrypt.compare(password, user.hash)
@@ -26,7 +28,7 @@ router.post('/auth', async (req, res) => {
             { expiresIn: '1h' } // время жизни токена
         )
 
-        return res.json({ token })
+        return res.json({ token, id: user.idUser })
 
     } catch (error) {
         console.log(error.message)
@@ -37,12 +39,17 @@ router.post('/auth', async (req, res) => {
 //Signup
 router.post('/register', async (req, res) => {
     try {
-        const { login, password } = req.body;
+        const { userData } = req.body;
+        const { login, password } = userData;
+        // const { userData: { login, password } } = req.body
+        // const { login, password } = req.body;
+        console.log(login);
+        // console.log(password);
 
         const user = await User.findOne({ userName: login })
 
-        if (user.userName) {
-            res.status(401).json({ message: 'Пользователя существует' })
+        if (user?.userName) {
+            res.status(401).json({ message: 'Пользователь существует' })
         }
 
         const saltRounds = 10;
@@ -56,7 +63,7 @@ router.post('/register', async (req, res) => {
             { expiresIn: '1h' } // время жизни токена
         )
 
-        return res.json({ token })
+        return res.json({ token, id: user.idUser })
 
     } catch (error) {
         console.log(error.message)
