@@ -49,7 +49,7 @@ router.post('/register', async (req, res) => {
         const user = await User.findOne({ userName: login })
 
         if (user?.userName) {
-            res.status(401).json({ message: 'Пользователь существует' })
+            return res.status(401).json({ message: 'Пользователь существует' })
         }
 
         const saltRounds = 10;
@@ -63,7 +63,7 @@ router.post('/register', async (req, res) => {
             { expiresIn: '1h' } // время жизни токена
         )
 
-        return res.json({ token, id: user.idUser })
+        return res.json({ token, id: newUser.idUser })
 
     } catch (error) {
         console.log(error.message)
