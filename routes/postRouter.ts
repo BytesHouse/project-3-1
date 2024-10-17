@@ -52,6 +52,17 @@ router.patch(
 router.delete(
   "/posts",
   //@ts-ignore
-  async (req: Request, res: Response) => {}
+  async (req: Request, res: Response) => {
+    try {
+      const { postId } = req.body;
+      await Post.findByIdAndDelete(postId);
+      //@ts-ignore
+      return res.status(200).json({ message: "Deleted" });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log("Delete operation ended");
+    }
+  }
 );
 export default router;
