@@ -1,0 +1,8 @@
+User-Agent: *
+
+Allow: /
+
+Disallow: /admin/
+Disallow: /about
+
+Sitemap: https://acme.com/sitemap.xml

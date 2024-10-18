@@ -6,6 +6,8 @@ import UserRouter from "./routes/userRouter";
 import BalanceRouter from "./routes/balanceRouter";
 import AuthRouter from "./routes/authRoter";
 import PostRouter from "./routes/postRouter";
+// import { Shapes } from "./examples/namespaces/shapes";
+import { Shapes } from "./examples/namespaces/nestedNamespaces";
 
 const app: Application = express();
 app.use(cors());
@@ -19,6 +21,9 @@ app.use("/", PostRouter);
 // })
 
 const start = () => {
+  // const shapes = new Shapes.Circle(10);
+  const shapes = new Shapes.D3.Cube(5);
+  console.log(shapes.getVolume());
   connectDB();
   app.listen(3000, () => {
     console.log("Сервер запущен");
